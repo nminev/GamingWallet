@@ -1,10 +1,7 @@
-﻿namespace GamingWallet.Models
-{
-    public interface IWallet
-    {
-        decimal Balance { get; }
+﻿
+namespace GamingWallet.Models;
 
-        void Deposit(decimal amount);
-        bool Withdraw(decimal amount);
-    }
+public interface IWallet
+{
+    public decimal Balance { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿namespace GamingWallet.Models;
+﻿namespace GamingWallet.Utility;
 
 public interface IRandomNumberGenerator
 {

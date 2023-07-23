@@ -1,4 +1,4 @@
-﻿using GamingWallet.Models;
+﻿using GamingWallet.Utility;
 
 public class RandomNumberGenerator : IRandomNumberGenerator
 {
