@@ -1,9 +1,11 @@
-﻿namespace GamingWallet.Models;
-public class Game : IGame
+﻿using GamingWallet.Utility;
+
+namespace GamingWallet.Services;
+public class RoundService : IRoundService
 {
     private readonly IRandomNumberGenerator _rng;
 
-    public Game(IRandomNumberGenerator rng)
+    public RoundService(IRandomNumberGenerator rng)
     {
         _rng = rng;
     }
@@ -14,19 +16,16 @@ public class Game : IGame
 
         if (roll < 0.5)
         {
-            Console.WriteLine("You lost the bet");
             return -bet;
         }
         else if (roll < 0.9)
         {
-            Console.WriteLine("You won the bet");
-            return bet;
+            return bet*2;
         }
         else
         {
             var winnings = bet * _rng.Next(2, 11);
-            Console.WriteLine($"You won big: {winnings}");
-            return winnings;
+            return winnings + bet;
         }
     }
 }
