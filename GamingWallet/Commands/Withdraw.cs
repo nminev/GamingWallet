@@ -27,6 +27,11 @@ public class WithdrawCommandHandler : ICommandHandler<WithdrawCommand>
     public void Handle(WithdrawCommand command)
     {
         decimal withdrawAmount = command.Amount;
+        if (withdrawAmount < 0)
+        {
+            _userOutputService.PrintErrorMessage("Invalid withdraw ammount.");
+            return;
+        }
 
         var result = _walletService.Withdraw(withdrawAmount);
         if (result.Success)

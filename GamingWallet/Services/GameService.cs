@@ -4,9 +4,6 @@ using GamingWallet.Services.ServiceInterfaces;
 namespace GamingWallet.Services;
 public class GameService : IGameService
 {
-    private const decimal MinBetAmount = 1;
-    private const decimal MaxBetAmount = 10;
-
     private readonly ICommandHandlerResolver _commandHandlerResolver;
     private readonly IUserInputService _userInputService;
     private readonly IUserOutputService _userOutputService;
@@ -66,7 +63,7 @@ public class GameService : IGameService
 
     private void HandlePlayCommand(decimal? amount)
     {
-        decimal betAmount = amount != default ? amount!.Value: GetValidBetAmount();
+        decimal betAmount = amount != default ? amount!.Value : GetValidBetAmount();
         var command = new PlayCommand(betAmount);
         var handler = _commandHandlerResolver.Resolve<PlayCommand>();
         handler.Handle(command);
@@ -77,12 +74,7 @@ public class GameService : IGameService
         while (true)
         {
             decimal betAmount = _userInputService.GetDecimalInput("Enter bet amount: ");
-            if (betAmount >= MinBetAmount && betAmount <= MaxBetAmount)
-            {
-                return betAmount;
-            }
-
-            _userOutputService.PrintErrorMessage("Invalid bet ammount");
+            return betAmount;
         }
     }
 }

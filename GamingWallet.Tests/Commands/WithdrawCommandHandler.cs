@@ -138,4 +138,17 @@ public class WithdrawCommandHandlerTests
         _walletServiceMock.Verify(w => w.Withdraw(secondWithdrawAmount), Times.Once);
     }
 
+    [Fact]
+    public void Handle_ShouldNotCallWalletServiceWithdraw_WhenWithdrawAmountIsNonPositive()
+    {
+        // Arrange
+        decimal withdrawAmount = -1;  // A non-positive withdrawal amount
+        var command = new WithdrawCommand(withdrawAmount);
+
+        // Act
+        _withdrawCommandHandler.Handle(command);
+
+        // Assert
+        _walletServiceMock.Verify(w => w.Withdraw(withdrawAmount), Times.Never);
+    }
 }

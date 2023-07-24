@@ -18,6 +18,8 @@ public class PlayCommandHandler : ICommandHandler<PlayCommand>
     private readonly IWalletService _walletService;
     private readonly IRoundService _roundService;
     private readonly IUserOutputService _userOutputService;
+    private const decimal MinBetAmount = 1;
+    private const decimal MaxBetAmount = 10;
 
     public PlayCommandHandler(IWalletService walletService, IRoundService roundService, IUserOutputService userOutputService)
     {
@@ -29,6 +31,17 @@ public class PlayCommandHandler : ICommandHandler<PlayCommand>
     public void Handle(PlayCommand command)
     {
         decimal betAmount = command.BetAmount;
+
+        if (!(betAmount >= MinBetAmount && betAmount <= MaxBetAmount))
+        {
+            _userOutputService.PrintErrorMessage("Invalid bet ammount. Must be between 1 and 10");
+            return;
+        }
+        else if (betAmount <= 0)
+        {
+            _userOutputService.PrintErrorMessage("Invalid bet ammount.");
+            return;
+        }
 
         var withdrawResult = _walletService.HouseWithdraw(betAmount);
         if (!withdrawResult.Success)

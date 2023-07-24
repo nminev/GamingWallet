@@ -32,6 +32,7 @@ public class WalletService : IWalletService
 
     private ITransactionResult DeductAmount(decimal amount)
     {
+
         if (_wallet.Balance < amount)
         {
             return new TransactionResult

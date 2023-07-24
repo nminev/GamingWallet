@@ -100,5 +100,46 @@ public class PlayCommandHandlerTests
         _userOutputServiceMock.Verify(u => u.PrintErrorMessage(string.Join(Environment.NewLine, errorMessage)), Times.Once);
     }
 
+    [Fact]
+    public void Handle_ShouldPrintErrorMessage_WhenBetAmountIsLessThanMinBetAmount()
+    {
+        // Arrange
+        decimal betAmount = 0.5m;  // Less than min bet amount
+        var command = new PlayCommand(betAmount);
+
+        // Act
+        _playCommandHandler.Handle(command);
+
+        // Assert
+        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet ammount. Must be between 1 and 10"))), Times.Once);
+    }
+
+    [Fact]
+    public void Handle_ShouldPrintErrorMessage_WhenBetAmountIsGreaterThanMaxBetAmount()
+    {
+        // Arrange
+        decimal betAmount = 10.5m;  // Greater than max bet amount
+        var command = new PlayCommand(betAmount);
+
+        // Act
+        _playCommandHandler.Handle(command);
+
+        // Assert
+        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet ammount. Must be between 1 and 10"))), Times.Once);
+    }
+
+    [Fact]
+    public void Handle_ShouldPrintErrorMessage_WhenBetAmountIsLessThanZero()
+    {
+        // Arrange
+        decimal betAmount = -10;
+        var command = new PlayCommand(betAmount);
+
+        // Act
+        _playCommandHandler.Handle(command);
+
+        // Assert
+        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet ammount."))), Times.Once);
+    }
 
 }
