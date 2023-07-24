@@ -1,4 +1,5 @@
-﻿using GamingWallet.Services.ServiceInterfaces;
+﻿using GamingWallet.Commands;
+using GamingWallet.Services.ServiceInterfaces;
 
 namespace GamingWallet.Services;
 public class GameService : IGameService
@@ -6,107 +7,69 @@ public class GameService : IGameService
     private const decimal MinBetAmount = 1;
     private const decimal MaxBetAmount = 10;
 
-    private readonly IWalletService _walletService;
-    private readonly IRoundService _roundService;
+    private readonly ICommandHandlerResolver _commandHandlerResolver;
     private readonly IUserInputService _userInputService;
     private readonly IUserOutputService _userOutputService;
 
-    public GameService(IWalletService wallet, IRoundService roundService, IUserInputService userInputService, IUserOutputService userOutputService)
+    public GameService(IUserInputService userInputService, IUserOutputService userOutputService, ICommandHandlerResolver commandHandlerResolver)
     {
-        _walletService = wallet;
-        _roundService = roundService;
         _userInputService = userInputService;
         _userOutputService = userOutputService;
+        _commandHandlerResolver = commandHandlerResolver;
     }
 
     public void RunGame()
     {
         while (true)
         {
-            string action = _userInputService.GetStringInput("Choose an action: [d]eposit, [w]ithdraw, [p]lay, [q]uit");
+            (string action, decimal? amount) = _userInputService.GetStringInput("Choose an action: [d]eposit, [w]ithdraw, [p]lay, [q]uit");
 
             switch (action)
             {
                 case "d":
-                    HandleDeposit();
+                case "deposit":
+                    HandleDepositCommand(amount);
                     break;
                 case "w":
-                    HandleWithdraw();
+                case "withdraw":
+                    HandleWithdrawCommand(amount);
                     break;
                 case "p":
-                    HandlePlay();
+                case "play":
+                    HandlePlayCommand(amount);
                     break;
                 case "q":
+                case "quit":
                     return;
                 default:
-                    _userOutputService.PrintMessage("Invalid Action");
-                    break;
+                    _userOutputService.PrintErrorMessage("Invalid Action");
+                    continue;
             }
         }
     }
 
-    private void HandleDeposit()
+    private void HandleDepositCommand(decimal? amount)
     {
-        decimal depositAmount = _userInputService.GetDecimalInput("Enter amount to deposit: ");
-        var result = _walletService.Deposit(depositAmount);
-        if (result.Success)
-        {
-            _userOutputService.PrintDeposit(depositAmount, result.NewBalance);
-        }
-        else
-        {
-            foreach (var errorMessage in result.ErrorMessage)
-            {
-                _userOutputService.PrintMessage(errorMessage);
-            }
-        }
+        decimal depositAmount = amount != default ? amount!.Value : _userInputService.GetDecimalInput("Enter amount to deposit: ");
+        var command = new DepositCommand(depositAmount);
+        var handler = _commandHandlerResolver.Resolve<DepositCommand>();
+        handler.Handle(command);
     }
 
-    private void HandleWithdraw()
+    private void HandleWithdrawCommand(decimal? amount)
     {
-        decimal withdrawAmount = _userInputService.GetDecimalInput("Enter amount to withdraw: ");
-        var result = _walletService.Withdraw(withdrawAmount);
-        if (result.Success)
-        {
-            _userOutputService.PrintWithdraw(withdrawAmount, result.NewBalance);
-        }
-        else
-        {
-            _userOutputService.PrintMessage(string.Join(Environment.NewLine, result.ErrorMessage));
-        }
+        decimal withdrawAmount = amount != default ? amount!.Value : _userInputService.GetDecimalInput("Enter amount to withdraw: ");
+        var command = new WithdrawCommand(withdrawAmount);
+        var handler = _commandHandlerResolver.Resolve<WithdrawCommand>();
+        handler.Handle(command);
     }
 
-    private void HandlePlay()
+    private void HandlePlayCommand(decimal? amount)
     {
-        decimal betAmount = GetValidBetAmount();
-        var withdrawResult = _walletService.HouseWithdraw(betAmount);
-        if (!withdrawResult.Success)
-        {
-            _userOutputService.PrintMessage(string.Join(Environment.NewLine, withdrawResult.ErrorMessage));
-            return;
-        }
-
-        var result = _roundService.PlayRound(betAmount);
-        if (result > 0)
-        {
-            _userOutputService.PrintWonBet(result);
-            var depositResult = _walletService.Deposit(result);
-
-            if (depositResult.Success)
-            {
-                _userOutputService.PrintCurrentBalance(depositResult.NewBalance);
-            }
-            else
-            {
-                _userOutputService.PrintMessage(string.Join(Environment.NewLine, depositResult.ErrorMessage));
-            }
-        }
-        else
-        {
-            _userOutputService.PrintLostBet();
-        }
-
-
+        decimal betAmount = amount != default ? amount!.Value: GetValidBetAmount();
+        var command = new PlayCommand(betAmount);
+        var handler = _commandHandlerResolver.Resolve<PlayCommand>();
+        handler.Handle(command);
     }
 
     private decimal GetValidBetAmount()
@@ -119,7 +82,7 @@ public class GameService : IGameService
                 return betAmount;
             }
 
-            _userOutputService.PrintMessage("Invalid bet ammount");
+            _userOutputService.PrintErrorMessage("Invalid bet ammount");
         }
     }
 }

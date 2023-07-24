@@ -9,8 +9,6 @@ public class Program
         var host = CreateHostBuilder(args).Build();
         var gameService = host.Services.GetRequiredService<IGameService>();
         gameService.RunGame();
-
-        host.Run();
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>

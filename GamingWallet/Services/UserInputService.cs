@@ -19,9 +19,20 @@ public class UserInputService : IUserInputService
         }
     }
 
-    public string GetStringInput(string prompt)
+    public (string, decimal?) GetStringInput(string prompt)
     {
         Console.WriteLine(prompt);
-        return Console.ReadLine();
+        string input = Console.ReadLine();
+
+        // Try to split the input into a command and a number
+        string[] parts = input.Split(' ');
+        if (parts.Length == 2 && decimal.TryParse(parts[1], out decimal number))
+        {
+            return (parts[0], number);
+        }
+
+        // If the input couldn't be split into a command and a number, return just the command
+        return (input, null);
     }
+
 }
