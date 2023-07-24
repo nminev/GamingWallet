@@ -1,9 +1,12 @@
-﻿namespace GamingWallet.Services.ServiceInterfaces
+﻿using GamingWallet.Models;
+
+namespace GamingWallet.Services.ServiceInterfaces
 {
     public interface IWalletService
     {
-        void Deposit(decimal amount);
-        bool Withdraw(decimal amount);
+        ITransactionResult Deposit(decimal amount);
+        ITransactionResult Withdraw(decimal amount);
+        ITransactionResult HouseWithdraw(decimal amount);
         decimal Balance();
     }
 }

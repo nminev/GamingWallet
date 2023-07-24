@@ -10,20 +10,44 @@ public class WalletService : IWalletService
         _wallet = wallet;
     }
 
-    public void Deposit(decimal amount)
+    public ITransactionResult Deposit(decimal amount)
     {
         _wallet.Balance += amount;
+        return new TransactionResult
+        {
+            Success = true,
+            NewBalance = _wallet.Balance
+        };
     }
 
-    public bool Withdraw(decimal amount)
+    public ITransactionResult Withdraw(decimal amount)
+    {
+        return DeductAmount(amount);
+    }
+
+    public ITransactionResult HouseWithdraw(decimal amount)
+    {
+        return DeductAmount(amount);
+    }
+
+    private ITransactionResult DeductAmount(decimal amount)
     {
         if (_wallet.Balance < amount)
         {
-            return false;
+            return new TransactionResult
+            {
+                Success = false,
+                NewBalance = _wallet.Balance,
+                ErrorMessage = { "Insufficient funds" }
+            };
         }
 
         _wallet.Balance -= amount;
-        return true;
+        return new TransactionResult
+        {
+            Success = true,
+            NewBalance = _wallet.Balance
+        };
     }
 
     public decimal Balance()

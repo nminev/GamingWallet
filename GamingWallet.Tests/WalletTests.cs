@@ -17,8 +17,8 @@ public class WalletTests
     {
         var wallet = new WalletService(new Wallet());
         wallet.Deposit(10);
-        var isSuccessful = wallet.Withdraw(5);
-        Assert.True(isSuccessful);
+        var result = wallet.Withdraw(5);
+        Assert.True(result.Success);
         Assert.Equal(5, wallet.Balance());
     }
 
@@ -26,8 +26,8 @@ public class WalletTests
     public void TestWithdrawInsufficientFunds()
     {
         var wallet = new WalletService(new Wallet());
-        var isSuccessful = wallet.Withdraw(5);
-        Assert.False(isSuccessful);
+        var result = wallet.Withdraw(5);
+        Assert.False(result.Success);
         Assert.Equal(0, wallet.Balance());
     }
 }

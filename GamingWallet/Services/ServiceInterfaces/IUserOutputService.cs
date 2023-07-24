@@ -4,9 +4,7 @@
     {
         void PrintCurrentBalance(decimal currentBalance);
         void PrintDeposit(decimal amount, decimal balance);
-        void PrintInsufficientFunds();
-        void PrintInvalidAction();
-        void PrintInvalidBetAmount();
+        void PrintMessage(string errorMessage);
         void PrintLostBet();
         void PrintWithdraw(decimal amount, decimal balance);
         void PrintWonBet(decimal winnings);
