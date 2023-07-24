@@ -1,4 +1,4 @@
-﻿using GamingWallet.Services;
+﻿using GamingWallet.Services.ServiceInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

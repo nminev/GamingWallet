@@ -1,4 +1,4 @@
-﻿namespace GamingWallet.Services
+﻿namespace GamingWallet.Services.ServiceInterfaces
 {
     public interface IRoundService
     {

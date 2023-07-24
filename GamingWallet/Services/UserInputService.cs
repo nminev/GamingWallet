@@ -1,4 +1,6 @@
-﻿namespace GamingWallet.Services;
+﻿using GamingWallet.Services.ServiceInterfaces;
+
+namespace GamingWallet.Services;
 public class UserInputService : IUserInputService
 {
     public decimal GetDecimalInput(string prompt)

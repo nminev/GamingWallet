@@ -2,7 +2,7 @@
 using GamingWallet.Utility;
 using Moq;
 
-namespace GamingWalletTests;
+namespace GamingWallet.Tests;
 public class RoundTests
 {
     [Fact]

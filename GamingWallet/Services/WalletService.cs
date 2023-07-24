@@ -1,4 +1,6 @@
-﻿namespace GamingWallet.Models;
+﻿using GamingWallet.Services.ServiceInterfaces;
+
+namespace GamingWallet.Models;
 
 public class WalletService : IWalletService
 {

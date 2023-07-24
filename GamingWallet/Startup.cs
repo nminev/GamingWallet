@@ -1,5 +1,6 @@
 ﻿using GamingWallet.Models;
 using GamingWallet.Services;
+using GamingWallet.Services.ServiceInterfaces;
 using GamingWallet.Utility;
 using Microsoft.Extensions.DependencyInjection;
 

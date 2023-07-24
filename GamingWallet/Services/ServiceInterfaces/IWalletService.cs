@@ -1,4 +1,4 @@
-﻿namespace GamingWallet.Models
+﻿namespace GamingWallet.Services.ServiceInterfaces
 {
     public interface IWalletService
     {

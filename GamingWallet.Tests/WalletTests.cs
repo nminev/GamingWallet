@@ -1,6 +1,6 @@
 ﻿using GamingWallet.Models;
 
-namespace GamingWalletTests;
+namespace GamingWallet.Tests;
     
 public class WalletTests
 {
