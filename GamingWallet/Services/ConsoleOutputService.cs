@@ -10,12 +10,12 @@ public class UserOutputService : IUserOutputService
         Console.WriteLine($"Current balance is: {currentBalance}");
     }
 
-    public void PrintDeposit(decimal amount, decimal balance)
+    public void PrintDepositSuccessfull(decimal amount, decimal balance)
     {
         Console.WriteLine($"Deposited {amount}. Current balance: {balance}");
     }
 
-    public void PrintMessage(string meessage)
+    public void PrintErrorMessage(string meessage)
     {
         Console.WriteLine(meessage);
     }
@@ -24,7 +24,7 @@ public class UserOutputService : IUserOutputService
         Console.WriteLine("You lost the bet");
     }
 
-    public void PrintWithdraw(decimal amount, decimal balance)
+    public void PrintWithdrawSuccessfull(decimal amount, decimal balance)
     {
         Console.WriteLine($"Withdrew {amount}. Current balance: {balance}");
     }
