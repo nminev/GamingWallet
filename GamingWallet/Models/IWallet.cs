@@ -1,7 +1,12 @@
-﻿
-namespace GamingWallet.Models;
+﻿namespace GamingWallet.Models;
 
+/// <summary>
+/// Defines the contract for a wallet, which includes information about the current balance.
+/// </summary>
 public interface IWallet
 {
-    public decimal Balance { get; set; }
+    /// <summary>
+    /// Gets or sets the current balance of the wallet.
+    /// </summary>
+    decimal Balance { get; set; }
 }

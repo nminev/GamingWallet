@@ -1,11 +1,11 @@
 ﻿using GamingWallet.Commands;
-using GamingWallet.Services.ServiceInterfaces;
-using GamingWallet.Services;
-using Microsoft.Extensions.DependencyInjection;
 using GamingWallet.Models;
+using GamingWallet.Services;
+using GamingWallet.Services.ServiceInterfaces;
 using GamingWallet.Utility;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace GamingWallet.Tests.Utility;
+namespace GamingWallet.Tests.IntegrationTests.Utility;
 public class CommandHandlerResolverTests
 {
     [Fact]

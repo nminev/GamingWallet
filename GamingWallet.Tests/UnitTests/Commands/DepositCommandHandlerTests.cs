@@ -1,8 +1,9 @@
-﻿using GamingWallet.Models;
+﻿using GamingWallet.Commands;
+using GamingWallet.Models;
 using GamingWallet.Services.ServiceInterfaces;
 using Moq;
 
-namespace GamingWallet.Tests.Commands;
+namespace GamingWallet.Tests.UnitTests.Commands;
 public class DepositCommandHandlerTests
 {
     private readonly Mock<IWalletService> _walletServiceMock;
@@ -45,7 +46,7 @@ public class DepositCommandHandlerTests
         _depositCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintDepositSuccessfull(depositAmount, depositAmount), Times.Once);
+        _userOutputServiceMock.Verify(u => u.PrintDepositSuccessful(depositAmount, depositAmount), Times.Once);
     }
 
     [Fact]
@@ -129,7 +130,7 @@ public class DepositCommandHandlerTests
         _depositCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintDepositSuccessfull(depositAmount, It.IsAny<decimal>()), Times.Never);
+        _userOutputServiceMock.Verify(u => u.PrintDepositSuccessful(depositAmount, It.IsAny<decimal>()), Times.Never);
     }
 
     [Fact]
@@ -146,7 +147,7 @@ public class DepositCommandHandlerTests
         _depositCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintDepositSuccessfull(depositAmount, newBalance), Times.Once);
+        _userOutputServiceMock.Verify(u => u.PrintDepositSuccessful(depositAmount, newBalance), Times.Once);
     }
 
 }

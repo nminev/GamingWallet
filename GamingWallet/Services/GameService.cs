@@ -25,7 +25,7 @@ public class GameService : IGameService
         {
             try
             {
-                (string action, decimal? amount) = _userInputService.GetStringInput("Choose an action: [d]eposit, [w]ithdraw, [p]lay, [q]uit");
+                (string? action, decimal? amount) = _userInputService.GetStringInput("Choose an action: [d]eposit, [w]ithdraw, [p]lay, [q]uit");
 
                 switch (action)
                 {
@@ -60,7 +60,7 @@ public class GameService : IGameService
 
     private void HandleDepositCommand(decimal? amount)
     {
-        decimal depositAmount = amount != default ? amount!.Value : _userInputService.GetDecimalInput("Enter amount to deposit: ");
+        decimal depositAmount = amount ?? _userInputService.GetDecimalInput("Enter amount to deposit: ");
         var command = new DepositCommand(depositAmount);
         var handler = _commandHandlerResolver.Resolve<DepositCommand>();
         handler.Handle(command);
@@ -68,7 +68,7 @@ public class GameService : IGameService
 
     private void HandleWithdrawCommand(decimal? amount)
     {
-        decimal withdrawAmount = amount != default ? amount!.Value : _userInputService.GetDecimalInput("Enter amount to withdraw: ");
+        decimal withdrawAmount = amount ?? _userInputService.GetDecimalInput("Enter amount to withdraw: ");
         var command = new WithdrawCommand(withdrawAmount);
         var handler = _commandHandlerResolver.Resolve<WithdrawCommand>();
         handler.Handle(command);
@@ -76,7 +76,7 @@ public class GameService : IGameService
 
     private void HandlePlayCommand(decimal? amount)
     {
-        decimal betAmount = amount != default ? amount!.Value : GetValidBetAmount();
+        decimal betAmount = amount ?? GetValidBetAmount();
         var command = new PlayCommand(betAmount);
         var handler = _commandHandlerResolver.Resolve<PlayCommand>();
         handler.Handle(command);

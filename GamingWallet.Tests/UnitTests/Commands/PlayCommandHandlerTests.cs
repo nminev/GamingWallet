@@ -3,7 +3,7 @@ using GamingWallet.Models;
 using GamingWallet.Services.ServiceInterfaces;
 using Moq;
 
-namespace GamingWallet.Tests.Commands;
+namespace GamingWallet.Tests.UnitTests.Commands;
 public class PlayCommandHandlerTests
 {
     private readonly Mock<IWalletService> _walletServiceMock;
@@ -27,7 +27,7 @@ public class PlayCommandHandlerTests
         decimal winAmount = 10;
         var command = new PlayCommand(betAmount);
 
-        _walletServiceMock.Setup(w => w.HouseWithdraw(betAmount)).Returns(new TransactionResult { Success = true });
+        _walletServiceMock.Setup(w => w.WithdrawForTheHouse(betAmount)).Returns(new TransactionResult { Success = true });
         _roundServiceMock.Setup(r => r.PlayRound(betAmount)).Returns(winAmount);
         _walletServiceMock.Setup(w => w.Deposit(winAmount)).Returns(new TransactionResult { Success = true, NewBalance = winAmount });
 
@@ -35,7 +35,7 @@ public class PlayCommandHandlerTests
         _playCommandHandler.Handle(command);
 
         // Assert
-        _walletServiceMock.Verify(w => w.HouseWithdraw(betAmount), Times.Once);
+        _walletServiceMock.Verify(w => w.WithdrawForTheHouse(betAmount), Times.Once);
         _walletServiceMock.Verify(w => w.Deposit(winAmount), Times.Once);
         _userOutputServiceMock.Verify(u => u.PrintWonBet(winAmount), Times.Once);
         _userOutputServiceMock.Verify(u => u.PrintCurrentBalance(winAmount), Times.Once);
@@ -48,14 +48,14 @@ public class PlayCommandHandlerTests
         decimal betAmount = 5;
         var command = new PlayCommand(betAmount);
 
-        _walletServiceMock.Setup(w => w.HouseWithdraw(betAmount)).Returns(new TransactionResult { Success = true });
+        _walletServiceMock.Setup(w => w.WithdrawForTheHouse(betAmount)).Returns(new TransactionResult { Success = true });
         _roundServiceMock.Setup(r => r.PlayRound(betAmount)).Returns(0m);
 
         // Act
         _playCommandHandler.Handle(command);
 
         // Assert
-        _walletServiceMock.Verify(w => w.HouseWithdraw(betAmount), Times.Once);
+        _walletServiceMock.Verify(w => w.WithdrawForTheHouse(betAmount), Times.Once);
         _walletServiceMock.Verify(w => w.Deposit(It.IsAny<decimal>()), Times.Never);
         _userOutputServiceMock.Verify(u => u.PrintLostBet(), Times.Once);
     }
@@ -68,13 +68,13 @@ public class PlayCommandHandlerTests
         var command = new PlayCommand(betAmount);
         var errorMessage = new List<string> { "Insufficient funds" };
 
-        _walletServiceMock.Setup(w => w.HouseWithdraw(betAmount)).Returns(new TransactionResult { Success = false, ErrorMessage = errorMessage });
+        _walletServiceMock.Setup(w => w.WithdrawForTheHouse(betAmount)).Returns(new TransactionResult { Success = false, ErrorMessage = errorMessage });
 
         // Act
         _playCommandHandler.Handle(command);
 
         // Assert
-        _walletServiceMock.Verify(w => w.HouseWithdraw(betAmount), Times.Once);
+        _walletServiceMock.Verify(w => w.WithdrawForTheHouse(betAmount), Times.Once);
         _userOutputServiceMock.Verify(u => u.PrintErrorMessage(string.Join(Environment.NewLine, errorMessage)), Times.Once);
         _roundServiceMock.Verify(r => r.PlayRound(It.IsAny<decimal>()), Times.Never); // Round should not be played
     }
@@ -88,7 +88,7 @@ public class PlayCommandHandlerTests
         var command = new PlayCommand(betAmount);
         var errorMessage = new List<string> { "Deposit failed" };
 
-        _walletServiceMock.Setup(w => w.HouseWithdraw(betAmount)).Returns(new TransactionResult { Success = true });
+        _walletServiceMock.Setup(w => w.WithdrawForTheHouse(betAmount)).Returns(new TransactionResult { Success = true });
         _roundServiceMock.Setup(r => r.PlayRound(betAmount)).Returns(winAmount);
         _walletServiceMock.Setup(w => w.Deposit(winAmount)).Returns(new TransactionResult { Success = false, ErrorMessage = errorMessage });
 
@@ -111,7 +111,7 @@ public class PlayCommandHandlerTests
         _playCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet ammount. Must be between 1 and 10"))), Times.Once);
+        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet amount. Must be between 1 and 10"))), Times.Once);
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class PlayCommandHandlerTests
         _playCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet ammount. Must be between 1 and 10"))), Times.Once);
+        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet amount. Must be between 1 and 10"))), Times.Once);
     }
 
     [Fact]
@@ -139,7 +139,7 @@ public class PlayCommandHandlerTests
         _playCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet ammount."))), Times.Once);
+        _userOutputServiceMock.Verify(u => u.PrintErrorMessage(It.Is<string>(s => s.Contains("Invalid bet amount."))), Times.Once);
     }
 
 }

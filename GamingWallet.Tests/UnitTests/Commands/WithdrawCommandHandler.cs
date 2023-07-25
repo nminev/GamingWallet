@@ -3,7 +3,7 @@ using GamingWallet.Models;
 using GamingWallet.Services.ServiceInterfaces;
 using Moq;
 
-namespace GamingWallet.Tests.Commands;
+namespace GamingWallet.Tests.UnitTests.Commands;
 
 public class WithdrawCommandHandlerTests
 {
@@ -46,7 +46,7 @@ public class WithdrawCommandHandlerTests
         _withdrawCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintWithdrawSuccessfull(withdrawAmount, It.IsAny<decimal>()), Times.Once);
+        _userOutputServiceMock.Verify(u => u.PrintWithdrawSuccessful(withdrawAmount, It.IsAny<decimal>()), Times.Once);
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public class WithdrawCommandHandlerTests
         _withdrawCommandHandler.Handle(command);
 
         // Assert
-        _userOutputServiceMock.Verify(u => u.PrintWithdrawSuccessfull(withdrawAmount, depositAmount - withdrawAmount), Times.Once);
+        _userOutputServiceMock.Verify(u => u.PrintWithdrawSuccessful(withdrawAmount, depositAmount - withdrawAmount), Times.Once);
     }
 
     [Fact]

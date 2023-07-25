@@ -1,15 +1,25 @@
-﻿using GamingWallet.Commands;
+﻿using System.Reflection;
+using GamingWallet.Commands;
 using GamingWallet.Models;
 using GamingWallet.Services;
 using GamingWallet.Services.ServiceInterfaces;
 using GamingWallet.Utility;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
+namespace GamingWallet;
+
+/// <summary>
+/// Configures services and app's request pipeline.
+/// </summary>
 public class Startup
 {
+    /// <summary>
+    /// Configures the app's services.
+    /// </summary>
+    /// <param name="services">Defines a contract for a collection of service descriptors.</param>
     public void ConfigureServices(IServiceCollection services)
     {
+        // Register services
         services.AddTransient<IRandomNumberGenerator, RandomNumberGenerator>();
         services.AddSingleton<IWallet, Wallet>();
         services.AddTransient<IWalletService, WalletService>();
@@ -41,5 +51,4 @@ public class Startup
             services.AddTransient(type);
         }
     }
-
 }

@@ -1,6 +1,9 @@
 ﻿using GamingWallet.Commands;
-using GamingWallet.Utility;
 using Microsoft.Extensions.DependencyInjection;
+
+namespace GamingWallet.Utility;
+
+/// <inheritdoc/>
 
 public class CommandHandlerResolver : ICommandHandlerResolver
 {
@@ -11,6 +14,7 @@ public class CommandHandlerResolver : ICommandHandlerResolver
         _serviceProvider = serviceProvider;
     }
 
+    /// <inheritdoc/>
     public ICommandHandler<TCommand> Resolve<TCommand>() where TCommand : ICommand
     {
         return _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();

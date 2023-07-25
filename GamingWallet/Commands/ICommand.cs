@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace GamingWallet.Commands;
 
-namespace GamingWallet.Commands
+/// <summary>
+/// Command to trigger the appropriate <see cref="ICommandHandler{TCommand}"/>.
+/// </summary>
+public interface ICommand
 {
-    public interface ICommand
-    {
-    }
 }

@@ -1,15 +1,18 @@
-﻿using GamingWallet.Services.ServiceInterfaces;
+﻿using GamingWallet.Models;
+using GamingWallet.Services.ServiceInterfaces;
 
-namespace GamingWallet.Models;
+namespace GamingWallet.Services;
 
+/// <inheritdoc/>
 public class WalletService : IWalletService
 {
-    private IWallet _wallet;
+    private readonly IWallet _wallet;
     public WalletService(IWallet wallet)
     {
         _wallet = wallet;
     }
-
+    
+    /// <inheritdoc/>
     public ITransactionResult Deposit(decimal amount)
     {
         _wallet.Balance += amount;
@@ -20,14 +23,22 @@ public class WalletService : IWalletService
         };
     }
 
+    /// <inheritdoc/>
     public ITransactionResult Withdraw(decimal amount)
     {
         return DeductAmount(amount);
     }
 
-    public ITransactionResult HouseWithdraw(decimal amount)
+    /// <inheritdoc/>
+    public ITransactionResult WithdrawForTheHouse(decimal amount)
     {
         return DeductAmount(amount);
+    }
+    
+    /// <inheritdoc/>
+    public decimal Balance()
+    {
+        return _wallet.Balance;
     }
 
     private ITransactionResult DeductAmount(decimal amount)
@@ -49,11 +60,6 @@ public class WalletService : IWalletService
             Success = true,
             NewBalance = _wallet.Balance
         };
-    }
-
-    public decimal Balance()
-    {
-        return _wallet.Balance;
     }
 }
 

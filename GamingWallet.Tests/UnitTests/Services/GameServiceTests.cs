@@ -3,7 +3,8 @@ using GamingWallet.Services;
 using GamingWallet.Services.ServiceInterfaces;
 using GamingWallet.Utility;
 using Moq;
-namespace GamingWallet.Tests.Services;
+
+namespace GamingWallet.Tests.UnitTests.Services;
 
 public class GameServiceTests
 {

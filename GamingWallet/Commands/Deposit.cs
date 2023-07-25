@@ -1,9 +1,15 @@
-﻿using GamingWallet.Commands;
-using GamingWallet.Services.ServiceInterfaces;
+﻿using GamingWallet.Services.ServiceInterfaces;
 
+namespace GamingWallet.Commands;
 
+/// <summary>
+/// Command to trigger deposit action.
+/// </summary>
 public class DepositCommand : ICommand
 {
+    /// <summary>
+    /// Amount to deposit.
+    /// </summary>
     public decimal Amount { get; }
 
     public DepositCommand(decimal amount)
@@ -12,17 +18,26 @@ public class DepositCommand : ICommand
     }
 }
 
+/// <summary>
+/// Handles deposit commands by depositing the specified amount into the wallet.
+/// </summary>
 public class DepositCommandHandler : ICommandHandler<DepositCommand>
 {
     private readonly IWalletService _walletService;
     private readonly IUserOutputService _userOutputService;
-
+    
     public DepositCommandHandler(IWalletService walletService, IUserOutputService userOutputService)
     {
         _walletService = walletService;
         _userOutputService = userOutputService;
     }
 
+    /// <summary>
+    /// Handles the specified deposit command by depositing the specified amount into the wallet.
+    /// If the deposit is successful, a success message is printed to the user.
+    /// If the deposit fails, the error messages are printed to the user.
+    /// </summary>
+    /// <param name="command">The deposit command to handle. This must be of type <see cref="DepositCommand"/>.</param>
     public void Handle(DepositCommand command)
     {
         var depositAmount = command.Amount;
@@ -36,7 +51,7 @@ public class DepositCommandHandler : ICommandHandler<DepositCommand>
         var result = _walletService.Deposit(depositAmount);
         if (result.Success)
         {
-            _userOutputService.PrintDepositSuccessfull(depositAmount, result.NewBalance);
+            _userOutputService.PrintDepositSuccessful(depositAmount, result.NewBalance);
         }
         else
         {
@@ -48,4 +63,3 @@ public class DepositCommandHandler : ICommandHandler<DepositCommand>
     }
 
 }
-
