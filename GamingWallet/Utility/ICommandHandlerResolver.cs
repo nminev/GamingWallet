@@ -1,6 +1,6 @@
 ﻿using GamingWallet.Commands;
 
-namespace GamingWallet.Services.ServiceInterfaces;
+namespace GamingWallet.Utility;
 
 public interface ICommandHandlerResolver
 {

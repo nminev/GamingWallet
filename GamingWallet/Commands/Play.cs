@@ -37,11 +37,6 @@ public class PlayCommandHandler : ICommandHandler<PlayCommand>
             _userOutputService.PrintErrorMessage("Invalid bet ammount. Must be between 1 and 10");
             return;
         }
-        else if (betAmount <= 0)
-        {
-            _userOutputService.PrintErrorMessage("Invalid bet ammount.");
-            return;
-        }
 
         var withdrawResult = _walletService.HouseWithdraw(betAmount);
         if (!withdrawResult.Success)

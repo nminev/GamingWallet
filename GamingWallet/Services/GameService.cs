@@ -1,5 +1,6 @@
 ﻿using GamingWallet.Commands;
 using GamingWallet.Services.ServiceInterfaces;
+using GamingWallet.Utility;
 
 namespace GamingWallet.Services;
 public class GameService : IGameService
@@ -19,31 +20,39 @@ public class GameService : IGameService
     {
         while (true)
         {
-            (string action, decimal? amount) = _userInputService.GetStringInput("Choose an action: [d]eposit, [w]ithdraw, [p]lay, [q]uit");
-
-            switch (action)
+            try
             {
-                case "d":
-                case "deposit":
-                    HandleDepositCommand(amount);
-                    break;
-                case "w":
-                case "withdraw":
-                    HandleWithdrawCommand(amount);
-                    break;
-                case "p":
-                case "play":
-                    HandlePlayCommand(amount);
-                    break;
-                case "q":
-                case "quit":
-                    return;
-                default:
-                    _userOutputService.PrintErrorMessage("Invalid Action");
-                    continue;
+                (string action, decimal? amount) = _userInputService.GetStringInput("Choose an action: [d]eposit, [w]ithdraw, [p]lay, [q]uit");
+
+                switch (action)
+                {
+                    case "d":
+                    case "deposit":
+                        HandleDepositCommand(amount);
+                        break;
+                    case "w":
+                    case "withdraw":
+                        HandleWithdrawCommand(amount);
+                        break;
+                    case "p":
+                    case "play":
+                        HandlePlayCommand(amount);
+                        break;
+                    case "q":
+                    case "quit":
+                        return;
+                    default:
+                        _userOutputService.PrintErrorMessage("Invalid Action");
+                        continue;
+                }
+            }
+            catch (Exception ex)
+            {
+                _userOutputService.PrintErrorMessage($"An error occurred: {ex.Message}");
             }
         }
     }
+
 
     private void HandleDepositCommand(decimal? amount)
     {

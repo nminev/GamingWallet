@@ -1,6 +1,7 @@
 ﻿using GamingWallet.Commands;
 using GamingWallet.Services;
 using GamingWallet.Services.ServiceInterfaces;
+using GamingWallet.Utility;
 using Moq;
 namespace GamingWallet.Tests.Services;
 
@@ -117,5 +118,17 @@ public class GameServiceTests
         handlerMock.Verify(h => h.Handle(It.Is<PlayCommand>(c => c.BetAmount == betAmount)), Times.Once);
     }
 
+    [Fact]
+    public void RunGame_ShouldPrintErrorMessage_WhenExceptionIsThrown()
+    {
+        // Arrange
+        _userInputServiceMock.Setup(s => s.GetStringInput(It.IsAny<string>())).Throws(new Exception("Test exception"));
+
+        // Act
+        _gameService.RunGame();
+
+        // Assert
+        _userOutputServiceMock.Verify(s => s.PrintErrorMessage(It.Is<string>(msg => msg.Contains("Test exception"))), Times.Once);
+    }
 
 }

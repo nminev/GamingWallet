@@ -1,5 +1,5 @@
 ﻿using GamingWallet.Commands;
-using GamingWallet.Services.ServiceInterfaces;
+using GamingWallet.Utility;
 using Microsoft.Extensions.DependencyInjection;
 
 public class CommandHandlerResolver : ICommandHandlerResolver
