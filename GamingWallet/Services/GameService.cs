@@ -3,6 +3,8 @@ using GamingWallet.Services.ServiceInterfaces;
 using GamingWallet.Utility;
 
 namespace GamingWallet.Services;
+
+/// <inheritdoc/>
 public class GameService : IGameService
 {
     private readonly ICommandHandlerResolver _commandHandlerResolver;
@@ -16,6 +18,7 @@ public class GameService : IGameService
         _commandHandlerResolver = commandHandlerResolver;
     }
 
+    /// <inheritdoc/>
     public void RunGame()
     {
         while (true)
@@ -49,6 +52,7 @@ public class GameService : IGameService
             catch (Exception ex)
             {
                 _userOutputService.PrintErrorMessage($"An error occurred: {ex.Message}");
+                break;
             }
         }
     }
